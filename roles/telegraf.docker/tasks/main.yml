@@ -1,0 +1,12 @@
+- block:
+  - template:
+      src: telegraf.docker.conf.j2
+      dest: /etc/telegraf/telegraf.d/docker.conf
+    register: telegraf_docker_template
+
+  - service:
+      name: telegraf
+      state: restarted
+    when: telegraf_docker_template.changed
+  become: true
+  become_user: root

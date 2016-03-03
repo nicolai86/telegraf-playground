@@ -11,6 +11,7 @@
     - influxdb
     - telegraf
     - telegraf.couchdb
+    - telegraf.docker
 
   post_tasks:
     # todo output: influxdb
