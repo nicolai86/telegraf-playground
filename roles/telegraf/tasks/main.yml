@@ -24,7 +24,7 @@
       name: telegraf
       state: started
 
-  - shell: curl -G 'http://{{ influxdb_host }}:8086/query' --data-urlencode "q=CREATE DATABASE telegraf"
+  - shell: curl -G 'http://{{ influxdb_host }}:8086/query' --data-urlencode "q=CREATE DATABASE telegraf WITH DURATION 90d REPLICATION 1"
 
   become: true
   become_user: root
