@@ -1,0 +1,7 @@
+influxdb_host: localhost
+
+chronograf_version: 0.10.0
+
+chronograf_download_urls:
+  Debian: "https://s3.amazonaws.com/get.influxdb.org/chronograf/chronograf_0.10.0_amd64.deb"
+  RedHat: "https://s3.amazonaws.com/get.influxdb.org/chronograf/chronograf-0.10.0-1.x86_64.rpm"

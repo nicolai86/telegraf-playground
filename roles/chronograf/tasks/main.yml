@@ -1,0 +1,28 @@
+- action: detect_version executable=/opt/chronograf/chronograf option=-version pattern="Chronograf - Version ([\d.]+)"
+
+- block:
+  - get_url:
+      url: "{{ chronograf_download_urls[ansible_os_family] }}"
+      dest: /tmp/
+    register: chronograf_download
+
+  - block:
+    - apt:
+        deb: "{{ chronograf_download['dest'] }}"
+        update_cache: no
+        state: present
+    when: ansible_os_family == 'Debian'
+
+  - block:
+    - yum:
+        name: "{{ chronograf_download['dest'] }}"
+        update_cache: no
+        state: present
+    when: ansible_os_family == 'RedHat'
+
+  - service:
+      name: chronograf
+      state: started
+  become: true
+  become_user: root
+  when: not chronograf.installed
