@@ -1,0 +1,12 @@
+- block:
+  - template:
+      src: telegraf.couchdb.conf.j2
+      dest: /etc/telegraf/telegraf.d/couchdb.conf
+    register: telegraf_couchdb_template
+
+  - service:
+      name: telegraf
+      state: restarted
+    when: telegraf_couchdb_template.changed
+  become: true
+  become_user: root

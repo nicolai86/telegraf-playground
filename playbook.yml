@@ -1,0 +1,18 @@
+- hosts: all
+  pre_tasks:
+    - debug: var=hostvars[inventory_hostname]
+
+  pre_tasks:
+    - apt: name=couchdb state=latest
+      become: true
+      become_user: root
+
+  roles:
+    - influxdb
+    - telegraf
+    - telegraf.couchdb
+
+  post_tasks:
+    # todo output: influxdb
+    # todo input: couchdb
+

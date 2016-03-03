@@ -1,0 +1,31 @@
+- action: detect_version executable=telegraf option=-version pattern="Telegraf - Version ([\d.]+)"
+
+- block:
+  - get_url:
+      url: "{{ telegraf_download_urls[ansible_os_family] }}"
+      dest: /tmp/
+    register: telegraf_download
+
+  - block:
+    - apt:
+        deb: "{{ telegraf_download['dest'] }}"
+        update_cache: no
+        state: present
+    when: ansible_os_family == 'Debian'
+
+  - block:
+    - yum:
+        name: "{{ telegraf_download['dest'] }}"
+        update_cache: no
+        state: present
+    when: ansible_os_family == 'RedHat'
+
+  - service:
+      name: telegraf
+      state: started
+
+  - shell: curl -G 'http://{{ influxdb_host }}:8086/query' --data-urlencode "q=CREATE DATABASE telegraf"
+
+  become: true
+  become_user: root
+  when: not telegraf.installed or telegraf.version != telegraf_version
